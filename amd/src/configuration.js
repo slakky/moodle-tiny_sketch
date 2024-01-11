@@ -42,7 +42,7 @@ export const configure = (instanceConfig) => {
                     blobInfo.blob(),
                     blobInfo.filename(),
                     progress
-                ))
+                ));
             }
             return;
         }),
