@@ -19,6 +19,7 @@ import {getPluginMetadata} from 'editor_tiny/utils';
 import {component, pluginName} from 'tiny_sketch/common';
 import * as Commands from 'tiny_sketch/commands';
 import * as Configuration from 'tiny_sketch/configuration';
+import * as Options from "./options";
 
 /**
  * Tiny Sketch plugin for Moodle.
@@ -42,6 +43,7 @@ export default new Promise(async(resolve) => {
     tinyMCE.PluginManager.add(`${component}/plugin`, (editor) => {
         // Setup the Commands (buttons, menu items, and so on).
         setupCommands(editor);
+        Options.register(editor);
 
         return pluginMetadata;
     });

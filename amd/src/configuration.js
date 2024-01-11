@@ -24,6 +24,7 @@
 import {buttonName} from './common';
 import {addMenubarItem, addToolbarButton, addContextmenuItem} from 'editor_tiny/utils';
 import uploadFile from 'editor_tiny/uploader';
+import {getCanUpload} from "./options";
 
 export const configure = (instanceConfig) => {
     // Update the instance configuration to add the Media menu option to the menus and toolbars and upload_handler.
@@ -33,14 +34,18 @@ export const configure = (instanceConfig) => {
         toolbar: addToolbarButton(instanceConfig.toolbar, "content", buttonName),
 
         // eslint-disable-next-line camelcase
-        images_upload_handler: (blobInfo, progress) => uploadFile(
-            window.tinymce.activeEditor,
-            'image',
-            blobInfo.blob(),
-            blobInfo.filename(),
-            progress
-        ),
-
+        images_upload_handler: (blobInfo, progress) => new Promise(async (resolve) => {
+            if(getCanUpload(window.tinymce.activeEditor)){
+                resolve(uploadFile(
+                    window.tinymce.activeEditor,
+                    'image',
+                    blobInfo.blob(),
+                    blobInfo.filename(),
+                    progress
+                ))
+            }
+            return;
+        }),
         // eslint-disable-next-line camelcase
         images_reuse_filename: true,
     };
